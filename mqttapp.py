@@ -41,7 +41,7 @@ def on_message(client, userdata, msg):
         datajs = {"data":data}
         #datajs = {"data" : data}
         print (datajs)
-        x = requests.post("http://localhost:8000/mqtttest/", json = datajs, verify = False)
+        x = requests.post("http://localhost/mqtttest/", json = datajs, verify = False)
         print(x)
     else:
         if(hubid_recv == True):
@@ -50,7 +50,7 @@ def on_message(client, userdata, msg):
 
 client = mqtt.Client()
 print(client)
-client.username_pw_set(username="sstpl",password="sstpl@123")
+client.username_pw_set(username="testuser_1",password="6vd6qhca72t")
 client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT, MQTT_KEEP_ALIVE_INTERVAL)
 client.on_connect = on_connect
 client.on_message = on_message
