@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Meter Para  - Tables</title>
+
+    <!-- Custom fonts for this template -->
+    <link href=" {% static 'vendor2/fontawesome-free/css/all.min.css' %} " rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href=" {% static 'vendor2/css/sb-admin-2.min.css' %} " rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+<link href=" {% static 'vendor2/datatables/dataTables.bootstrap4.min.css' %} " rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- sweet alert -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+<script type="text/javascript">
+
+
+// function edit(sid,mname) 
+// {
+// alert("hello");
+//  $.ajax({
+//                 url: "/test_update/",
+//                 type: "POST",
+//                 dataType: "json",
+//                 data: JSON.stringify({
+//                 'pid': sid,
+//                 'mname': mname
+//                    }),
+//                 success: function () {
+//                     swal("Done!","It was succesfully deleted!","success");
+//                     //window.location.reload();
+//                 }
+//             });
+
+// }
+
+
+
+
+function confirmDelete(sid,mname) {
+    swal({
+    title: "Are you sure to delete?",
+    text: "Delete Confirmation?",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Delete",
+    closeOnConfirm: false
+  },
+  function() {
+    $.ajax({
+                url: "/delete_meter/",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                'pid': sid,
+                'mname': mname
+                   }),
+                success: function () {
+                    swal("Done!","It was succesfully deleted!","success");
+                    window.location.reload();
+                }
+            })
+      .done(function() {
+        swal("Deleted!", "Data successfully Deleted!", "success");
+      })
+      .error(function() {
+        swal("Oops", "We couldn't connect to the server!", "error");
+      });
+  }
+);
+
+}
+    
+
+
+
+
+      </script>
+
+
+
+</head>
+
+            <!-- Main Content -->
+           
+
+               
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Meter</h1>
+                 <!--    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank"
+                            href="https://datatables.net">official DataTables documentation</a>.</p> -->
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Parameter Example</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Devid</th>
+                                            <th>Date</th>
+                                            <th>Voltage</th>
+                                            <th>Current</th>
+                                            <th>Pf</th>
+                                            <th>status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                               
+                                    <tbody>
+                                        {% for raw in meter_list %}
+                                        <tr>
+                                            <td>{{raw.devid}}</td>
+                                            <td>{{raw.date}}</td>
+                                            <td>{{raw.voltage}}</td>          
+                                            <td>{{raw.phase_current}}</td>
+                                            <td>{{raw.pf}}</td>
+                                            <td>{% if raw.get_date == 'Down' %}
+                                                    <span class="block-email" style="color:Red;font-weight:bold">{{raw.get_date}}</span>
+                                                    {% else %}
+                                                     <span class="block-email" style="color:Green;font-weight:bold">{{raw.get_date}}</span>
+                                                    {% endif %}</td>
+                                            
+
+        <td>
+            <a class="item" data-toggle="tooltip" data-placement="top" title="Edit" href="/update_meter/?id={{raw.0}}&mtype={{mtype2}}">
+                                                            <i class="zmdi zmdi-edit"></i></a>&nbsp&nbsp&nbsp&nbsp
+                                                
+                                                       
+                                        <a href="#" onclick="confirmDelete({{raw.0}},'{{mtype2}}')" class="button"  data-toggle="tooltip"  data-placement="top" title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                         </a>
+        </td>
+                                        </tr>
+                                        
+                                          {% endfor %} 
+                                       
+                                        
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            
+            <!-- End of Main Content -->
+
+           
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src=" {% static 'vendor2/jquery/jquery.min.js' %} "></script>
+    <script src=" {% static 'vendor2/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src=" {% static 'vendor2/jquery-easing/jquery.easing.min.js' %} "></script>
+
+    <!-- Custom scripts for all pages -->
+    <script src=" {% static 'vendor2/js/sb-admin-2.min.js' %} "></script>
+
+    <!-- Page level plugins -->
+    <script src=" {% static 'vendor2/datatables/jquery.dataTables.min.js' %} "></script>
+    <script src=" {% static 'vendor2/datatables/dataTables.bootstrap4.min.js' %} "></script>
+
+    <!-- Page level custom scripts -->
+    <script src=" {% static 'vendor2/js/demo/datatables-demo.js' %} "></script>
+
+
+</body>
+</html>
